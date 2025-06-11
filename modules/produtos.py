@@ -5,3 +5,5 @@
 #- Edição de informações de produtos existentes
 #- Exclusão de produtos
 #
+
+print("testando")
