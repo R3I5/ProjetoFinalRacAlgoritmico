@@ -7,4 +7,3 @@
 #
 
 print("testando")
-print("teste2")
