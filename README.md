@@ -54,4 +54,4 @@ Para executar este projeto localmente, siga os passos abaixo:
 **2. Clone o repositório:**
 ```bash
 git clone https://github.com/R3I5/ProjetoFinalRacAlgoritmico.git
-cd nome-da-pasta-do-projeto
+cd ProjetoFinalRacAlgoritmico
