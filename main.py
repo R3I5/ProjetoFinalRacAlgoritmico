@@ -14,25 +14,26 @@ def menu_admin(usuario_logado):
         print("6. Cadastrar Novo Usuário")
         print("7. Listar Usuários")
         print("8. Excluir Usuário")
+        print("9. Relatório de caixa")
         print("--- Sistema ---")
         print("0. Sair (Logout)")
         
         opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            #produtos.listProtudos
+            #vendas
             pass
         elif opcao == '2':
-            #produtos.registerProdutos
+            produtos.list_products()
             pass
         elif opcao == '3':
-            #produtos.sell
+            produtos.register_products()
             pass
         elif opcao == '4':
-            #produtos.edit
+            produtos.edit_products()
             pass
         elif opcao == '5':
-            #list.UserW
+            produtos.delete_product()
             pass
         elif opcao == '6':
             usuarios.register_user()
