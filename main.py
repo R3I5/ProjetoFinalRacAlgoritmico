@@ -1,4 +1,4 @@
-from modules import usuarios, produtos
+from modules import usuarios, produtos, vendas, relatorios
 
 def menu_admin(usuario_logado):
     while True:
@@ -14,15 +14,14 @@ def menu_admin(usuario_logado):
         print("6. Cadastrar Novo Usuário")
         print("7. Listar Usuários")
         print("8. Excluir Usuário")
-        print("9. Relatório de caixa")
+        print("9. Relatório de caixa do dia")
         print("--- Sistema ---")
         print("0. Sair (Logout)")
         
         opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            pass
-            #vendas
+            vendas.make_sell(usuario_logado)
         elif opcao == '2':
             produtos.list_products()
         elif opcao == '3':
@@ -37,6 +36,8 @@ def menu_admin(usuario_logado):
             usuarios.list_users()
         elif opcao == '8':
             usuarios.delete_user(usuario_logado)
+        elif opcao == '9':
+            relatorios.relatorio_vendas_diarias()
         elif opcao == '0':
             print("Fazendo Logout...")
             break
@@ -47,8 +48,21 @@ def menu_admin(usuario_logado):
 def menu_vendedor(usuario_logado):
     while True:
         print(f"\n--- Menu Principal (Vendedor: {usuario_logado['nome_completo']})---")
-        print("1. Listar Produtos")
-        print("2. Vender Produtos")
+        print("1. Realizar Venda")
+        print("2. Listar Produtos")
+        print("3. Sair (Logout)")
+        
+        opcao = input("Escolha uma opção: ")
+        
+        if opcao == '1':
+            vendas.make_sell(usuario_logado)
+        elif opcao == '2':
+            produtos.list_products()
+        elif opcao == '3':
+            print("Fazendo logout...")
+            break
+        else:
+            print("Opção inválida")
 
 
 def main():
