@@ -21,29 +21,22 @@ def menu_admin(usuario_logado):
         opcao = input("Escolha uma opção: ")
         
         if opcao == '1':
-            #vendas
             pass
+            #vendas
         elif opcao == '2':
             produtos.list_products()
-            pass
         elif opcao == '3':
             produtos.register_products()
-            pass
         elif opcao == '4':
             produtos.edit_products()
-            pass
         elif opcao == '5':
             produtos.delete_product()
-            pass
         elif opcao == '6':
             usuarios.register_user()
-            pass
         elif opcao == '7':
             usuarios.list_users()
-            pass
         elif opcao == '8':
             usuarios.delete_user(usuario_logado)
-            pass
         elif opcao == '0':
             print("Fazendo Logout...")
             break
