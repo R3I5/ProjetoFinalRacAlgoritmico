@@ -7,13 +7,13 @@ class TelaProdutos(ctk.CTkFrame):
         super().__init__(master)
 
         # --- Configuração do Grid Layout ---
-        self.grid_columnconfigure(1, weight=1) # A coluna da lista se expande
+        self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         # --- Frame dos Botões de Ação (Coluna 0) ---
         action_frame = ctk.CTkFrame(self, width=150)
         action_frame.grid(row=0, column=0, padx=(10, 5), pady=10, sticky="nsew")
-        action_frame.grid_rowconfigure(5, weight=1) # Espaço flexível para empurrar os botões para cima
+        action_frame.grid_rowconfigure(5, weight=1) # Espaço flexível
 
         ctk.CTkLabel(action_frame, text="Ações de Produto", font=ctk.CTkFont(size=16, weight="bold")).grid(row=0, column=0, padx=10, pady=10)
         ctk.CTkButton(action_frame, text="Cadastrar", command=self.cadastrar_produto).grid(row=1, column=0, padx=10, pady=7, sticky="ew")
@@ -35,7 +35,7 @@ class TelaProdutos(ctk.CTkFrame):
         """Busca os dados do backend e atualiza a caixa de texto."""
         self.textbox.configure(state="normal")
         self.textbox.delete("1.0", "end")
-        lista_str = produtos.get_products_as_string()
+        lista_str = produtos.get_products_as_string() #
         self.textbox.insert("1.0", lista_str)
         self.textbox.configure(state="disabled")
 
@@ -53,11 +53,15 @@ class TelaProdutos(ctk.CTkFrame):
                 messagebox.showerror("Erro de Validação", "Valores numéricos não podem ser negativos.", parent=self)
                 return
 
-            if produtos.register_product(nome, preco_custo, preco_venda, estoque):
+            # <<< ALTERAÇÃO AQUI >>>
+            # Agora, a interface verifica o retorno da função de registro.
+            # Se retornar False, significa que a validação de preço falhou no backend.
+            if produtos.register_product(nome, preco_custo, preco_venda, estoque): #
                 messagebox.showinfo("Sucesso", "Produto cadastrado com sucesso!", parent=self)
                 self.atualizar_lista()
             else:
-                messagebox.showerror("Erro", "Não foi possível cadastrar o produto.", parent=self)
+                # Mensagem de erro específica para a validação de preços.
+                messagebox.showerror("Erro de Lógica", "Não foi possível cadastrar. O preço de venda deve ser maior que o preço de custo.", parent=self)
 
         except (ValueError, TypeError):
             messagebox.showerror("Erro de Validação", "Por favor, insira valores numéricos válidos para preços e estoque.", parent=self)
@@ -69,7 +73,7 @@ class TelaProdutos(ctk.CTkFrame):
             if not id_prod_str: return
             id_prod = int(id_prod_str)
 
-            prod_existente = produtos.find_product_by_id(id_prod)
+            prod_existente = produtos.find_product_by_id(id_prod) #
             if not prod_existente:
                 messagebox.showerror("Erro", "Produto não encontrado.", parent=self)
                 return
@@ -79,11 +83,15 @@ class TelaProdutos(ctk.CTkFrame):
             
             novo_preco = float(novo_preco_str) if novo_preco_str else None
 
-            if produtos.edit_product(id_prod, novo_nome, novo_preco, None): # Estoque é editado em outra função
+            # <<< ALTERAÇÃO AQUI >>>
+            # A interface agora verifica o retorno da função de edição.
+            # Se retornar False, a validação de preço falhou no backend.
+            if produtos.edit_product(id_prod, novo_nome, novo_preco, None): #
                 messagebox.showinfo("Sucesso", "Produto editado com sucesso!", parent=self)
                 self.atualizar_lista()
             else:
-                messagebox.showerror("Erro", "Não foi possível editar o produto.", parent=self)
+                # Mensagem de erro específica para a falha na edição.
+                messagebox.showerror("Erro de Lógica", "Não foi possível editar. Verifique se o novo preço de venda é maior que o preço de custo.", parent=self)
 
         except (ValueError, TypeError):
             messagebox.showerror("Erro de Validação", "Valores inválidos.", parent=self)
@@ -95,13 +103,13 @@ class TelaProdutos(ctk.CTkFrame):
             if not id_prod_str: return
             id_prod = int(id_prod_str)
 
-            prod_existente = produtos.find_product_by_id(id_prod)
+            prod_existente = produtos.find_product_by_id(id_prod) #
             if not prod_existente:
                 messagebox.showerror("Erro", "Produto não encontrado.", parent=self)
                 return
             
             if messagebox.askyesno("Confirmação", f"Tem certeza que deseja excluir '{prod_existente['nome']}'?", parent=self):
-                if produtos.delete_product(id_prod):
+                if produtos.delete_product(id_prod): #
                     messagebox.showinfo("Sucesso", "Produto excluído.", parent=self)
                     self.atualizar_lista()
                 else:
@@ -116,7 +124,7 @@ class TelaProdutos(ctk.CTkFrame):
             if not id_prod_str: return
             id_prod = int(id_prod_str)
             
-            prod_existente = produtos.find_product_by_id(id_prod)
+            prod_existente = produtos.find_product_by_id(id_prod) #
             if not prod_existente:
                 messagebox.showerror("Erro", "Produto não encontrado.", parent=self)
                 return
@@ -126,7 +134,7 @@ class TelaProdutos(ctk.CTkFrame):
             qtd = int(qtd_str)
             
             if qtd > 0:
-                if produtos.stock(id_prod, qtd):
+                if produtos.stock(id_prod, qtd): #
                     messagebox.showinfo("Sucesso", "Estoque atualizado.", parent=self)
                     self.atualizar_lista()
                 else:
