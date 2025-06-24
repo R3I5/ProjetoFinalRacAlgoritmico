@@ -1,17 +1,16 @@
-# modules/produtos.py
 import csv
 import os
 from datetime import datetime
 from modules import transacoes
 
-CAMINHO_ARQUIVO_PRODUTOS = os.path.join('data', 'produtos.csv')
-CABECALHO = ['id', 'nome', 'preco_custo', 'preco_venda', 'estoque']
+arquivo_produtos = os.path.join('data', 'produtos.csv')
+cabecalho = ['id', 'nome', 'preco_custo', 'preco_venda', 'estoque']
 
 def load_products():
-    if not os.path.exists(CAMINHO_ARQUIVO_PRODUTOS): return []
+    if not os.path.exists(arquivo_produtos): return []
     produtos = []
     try:
-        with open(CAMINHO_ARQUIVO_PRODUTOS, 'r', encoding='utf-8', newline='') as f:
+        with open(arquivo_produtos, 'r', encoding='utf-8', newline='') as f:
             leitor_csv = csv.DictReader(f)
             for linha in leitor_csv:
                 linha['id'] = int(linha['id'])
@@ -26,8 +25,8 @@ def load_products():
 def save_products(lista_produtos):
     os.makedirs('data', exist_ok=True)
     try:
-        with open(CAMINHO_ARQUIVO_PRODUTOS, 'w', encoding='utf-8', newline='') as f:
-            escritor_csv = csv.DictWriter(f, fieldnames=CABECALHO)
+        with open(arquivo_produtos, 'w', encoding='utf-8', newline='') as f:
+            escritor_csv = csv.DictWriter(f, fieldnames=cabecalho)
             escritor_csv.writeheader()
             escritor_csv.writerows(lista_produtos) 
     except Exception as e:

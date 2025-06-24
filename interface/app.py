@@ -21,7 +21,8 @@ class App(ctk.CTk):
             self._frame_atual.pack(fill="both", expand=True)
         
         elif nome_da_tela == "principal":
-            self.geometry("600x450")
+            # Tamanho maior para acomodar o layout com sidebar
+            self.geometry("1200x720")
             self.resizable(True, True)
             self._frame_atual = TelaPrincipal(self, self.usuario_logado, self.logout)
             self._frame_atual.pack(fill="both", expand=True)

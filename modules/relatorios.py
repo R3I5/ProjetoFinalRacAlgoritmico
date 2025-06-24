@@ -1,5 +1,3 @@
-# modules/relatorios.py
-
 from datetime import datetime
 from modules import transacoes, usuarios
 

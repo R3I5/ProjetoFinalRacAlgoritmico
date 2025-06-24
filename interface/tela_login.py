@@ -1,4 +1,3 @@
-# interface/tela_login.py
 import customtkinter as ctk
 from tkinter import messagebox
 from modules import usuarios

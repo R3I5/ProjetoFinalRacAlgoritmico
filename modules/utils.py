@@ -1,5 +1,3 @@
-# modules/utils.py
-
 def obter_input_texto(prompt, permitir_espacos=True):
     """Pede um input de texto, garantindo que não seja vazio e que contenha apenas letras (e espaços, se permitido)."""
     while True:

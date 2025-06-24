@@ -1,5 +1,3 @@
-# modules/vendas.py
-
 from datetime import datetime
 from modules import produtos, transacoes
 

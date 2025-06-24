@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from tkinter import messagebox
 from .tela_produtos import TelaProdutos
 from .tela_usuarios import TelaUsuarios
 from .tela_vendas import TelaVenda
@@ -11,47 +10,40 @@ class TelaPrincipal(ctk.CTkFrame):
         self.usuario_logado = usuario_logado
         self.callback_logout = callback_logout
 
-        top_frame = ctk.CTkFrame(self, fg_color="transparent")
-        top_frame.pack(fill="x", padx=20, pady=10)
-        ctk.CTkLabel(top_frame, text=f"Usuário: {self.usuario_logado['nome_completo']} ({self.usuario_logado['role']})", font=("Arial", 16)).pack(side="left")
-        ctk.CTkButton(top_frame, text="Logout", width=100, command=self.callback_logout).pack(side="right")
-        
-        action_frame = ctk.CTkFrame(self)
-        action_frame.pack(fill="both", expand=True, padx=20, pady=20)
-        action_frame.grid_columnconfigure(0, weight=1)
-        ctk.CTkLabel(action_frame, text="Menu de Opções", font=("Arial", 14, "bold")).pack(pady=(0, 10))
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
-        ctk.CTkButton(action_frame, text="Realizar Venda", height=40, command=self.abrir_tela_venda).pack(fill="x", pady=5)
-        
+        self.sidebar_frame = ctk.CTkFrame(self, width=200, corner_radius=0)
+        self.sidebar_frame.grid(row=0, column=0, sticky="nsew")
+        self.sidebar_frame.grid_rowconfigure(6, weight=1)
+
+        logo_label = ctk.CTkLabel(self.sidebar_frame, text="Gestão da Loja", font=ctk.CTkFont(size=20, weight="bold"))
+        logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+
+        ctk.CTkButton(self.sidebar_frame, text="Realizar Venda", height=40, command=self.abrir_tela_venda).grid(row=1, column=0, padx=20, pady=10, sticky="ew")
         if self.usuario_logado['role'] == 'admin':
-            ctk.CTkButton(action_frame, text="Gerenciar Produtos", height=40, command=self.abrir_tela_produtos).pack(fill="x", pady=5)
-            ctk.CTkButton(action_frame, text="Gerenciar Usuários", height=40, command=self.abrir_tela_usuarios).pack(fill="x", pady=5)
-            ctk.CTkButton(action_frame, text="Ver Relatórios", height=40, command=self.abrir_tela_relatorios).pack(fill="x", pady=5)
+            ctk.CTkButton(self.sidebar_frame, text="Gerenciar Produtos", height=40, command=self.abrir_tela_produtos).grid(row=2, column=0, padx=20, pady=10, sticky="ew")
+            ctk.CTkButton(self.sidebar_frame, text="Gerenciar Usuários", height=40, command=self.abrir_tela_usuarios).grid(row=3, column=0, padx=20, pady=10, sticky="ew")
+            ctk.CTkButton(self.sidebar_frame, text="Relatórios", height=40, command=self.abrir_tela_relatorios).grid(row=4, column=0, padx=20, pady=10, sticky="ew")
+        ctk.CTkButton(self.sidebar_frame, text="Logout", command=self.callback_logout).grid(row=7, column=0, padx=20, pady=20, sticky="s")
+        
+        self.main_content_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.main_content_frame.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
+        
+        self.welcome_label = ctk.CTkLabel(self.main_content_frame, text="Selecione uma opção no menu lateral para começar.", font=("Arial", 18))
+        self.welcome_label.pack(pady=100)
+    
+    def limpar_e_mostrar_frame(self, FrameClasse):
+        for widget in self.main_content_frame.winfo_children():
+            widget.destroy()
+        
+        if FrameClasse in [TelaUsuarios, TelaVenda]:
+            frame = FrameClasse(self.main_content_frame, self.usuario_logado)
+        else:
+            frame = FrameClasse(self.main_content_frame)
+        frame.pack(fill="both", expand=True)
 
-    def abrir_tela_produtos(self):
-        if not hasattr(self, 'janela_produtos') or not self.janela_produtos.winfo_exists():
-            self.janela_produtos = TelaProdutos(self)
-            self.janela_produtos.grab_set()
-        else:
-            self.janela_produtos.lift()
-
-    def abrir_tela_venda(self):
-        if not hasattr(self, 'janela_venda') or not self.janela_venda.winfo_exists():
-            self.janela_venda = TelaVenda(self, self.usuario_logado)
-            self.janela_venda.grab_set()
-        else:
-            self.janela_venda.lift()
-            
-    def abrir_tela_usuarios(self):
-        if not hasattr(self, 'janela_usuarios') or not self.janela_usuarios.winfo_exists():
-            self.janela_usuarios = TelaUsuarios(self)
-            self.janela_usuarios.grab_set()
-        else:
-            self.janela_usuarios.lift()
-
-    def abrir_tela_relatorios(self):
-        if not hasattr(self, 'janela_relatorios') or not self.janela_relatorios.winfo_exists():
-            self.janela_relatorios = TelaRelatorios(self)
-            self.janela_relatorios.grab_set()
-        else:
-            self.janela_relatorios.lift()
+    def abrir_tela_produtos(self): self.limpar_e_mostrar_frame(TelaProdutos)
+    def abrir_tela_usuarios(self): self.limpar_e_mostrar_frame(TelaUsuarios)
+    def abrir_tela_relatorios(self): self.limpar_e_mostrar_frame(TelaRelatorios)
+    def abrir_tela_venda(self): self.limpar_e_mostrar_frame(TelaVenda)
