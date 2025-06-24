@@ -1,36 +1,39 @@
 # modules/relatorios.py
 
 from datetime import datetime
-from modules import transacoes, usuarios, produtos
+from modules import transacoes, usuarios
 
-def relatorio_vendas_diarias():
-    print("\n--- Relatório de Vendas do Dia ---")
-    
+def get_daily_sales_report_string():
+    """Gera e retorna um relatório de vendas do dia como uma string formatada."""
     lista_de_transacoes = transacoes.load_transactions()
     data_hoje = datetime.now().date()
     
     vendas_de_hoje = [t for t in lista_de_transacoes if t.get('tipo') == 'venda' and datetime.fromisoformat(t['timestamp']).date() == data_hoje]
             
     if not vendas_de_hoje:
-        print("Nenhuma venda registrada hoje."); return
+        return "Nenhuma venda registrada hoje."
 
-    # Otimização: Carrega os usuários uma vez e cria um mapa para busca rápida
     mapa_usuarios = {u['id']: u['username'] for u in usuarios.load_user()}
-    
     total_vendido_dia = sum(venda.get('valor_total', 0) for venda in vendas_de_hoje)
     total_lucro_dia = sum(venda.get('lucro_total', 0) for venda in vendas_de_hoje)
 
-    print("-" * 70)
+    # Construindo a string do relatório
+    relatorio_str = "--- Relatório de Vendas do Dia ---\n"
+    relatorio_str += "-" * 70 + "\n"
+
     for venda in vendas_de_hoje:
         hora_venda = datetime.fromisoformat(venda['timestamp']).strftime('%H:%M:%S')
         nome_vendedor = mapa_usuarios.get(venda['usuario_id'], "N/A")
 
-        print(f"Venda ID: {venda['id']} | Horário: {hora_venda} | Vendedor: {nome_vendedor}")
+        relatorio_str += f"Venda ID: {venda['id']} | Horário: {hora_venda} | Vendedor: {nome_vendedor}\n"
         for item in venda['produtos_vendidos']:
-            print(f"  - {item['quantidade']}x {item['nome']} (R$ {item['preco_unidade']:.2f})")
-        print("-" * 70)
+            relatorio_str += f"  - {item['quantidade']}x {item['nome']} (R$ {item['preco_unidade']:.2f})\n"
+        relatorio_str += f"  > Total da Venda: R$ {venda['valor_total']:.2f} | Lucro: R$ {venda['lucro_total']:.2f}\n"
+        relatorio_str += "-" * 70 + "\n"
         
-    print("\n--- Resumo do Dia ---")
-    print(f"Total Vendido: R$ {total_vendido_dia:.2f}")
-    print(f"Lucro Total do Dia: R$ {total_lucro_dia:.2f}")
-    print("-" * 70)
+    relatorio_str += "\n--- Resumo do Dia ---\n"
+    relatorio_str += f"Total Vendido: R$ {total_vendido_dia:.2f}\n"
+    relatorio_str += f"Lucro Total do Dia: R$ {total_lucro_dia:.2f}\n"
+    relatorio_str += "-" * 70 + "\n"
+    
+    return relatorio_str
