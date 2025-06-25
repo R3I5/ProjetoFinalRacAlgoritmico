@@ -2,13 +2,11 @@ from datetime import datetime
 from modules import produtos, transacoes
 
 def process_sale(carrinho, usuario_logado):
-    """Recebe um carrinho de compras e um usuário, processa a venda, atualiza o estoque e registra a transação."""
     if not carrinho:
         return False, "Carrinho vazio."
 
     lista_produtos_atual = produtos.load_products()
     
-    # Validação de estoque antes de processar
     for item_carrinho in carrinho:
         for produto_db in lista_produtos_atual:
             if produto_db['id'] == item_carrinho['produto_id']:
@@ -16,7 +14,6 @@ def process_sale(carrinho, usuario_logado):
                     return False, f"Estoque insuficiente para {produto_db['nome']}."
                 break
     
-    # Se todo o estoque estiver ok, processa a venda
     lucro_total_venda = 0.0
     valor_total_venda = 0.0
 
@@ -33,7 +30,6 @@ def process_sale(carrinho, usuario_logado):
     
     produtos.save_products(lista_produtos_atual)
 
-    # Registro da transação
     lista_transacoes_atual = transacoes.load_transactions()
     novo_id_transacao = max([t.get('id', 0) for t in lista_transacoes_atual] + [0]) + 1
     

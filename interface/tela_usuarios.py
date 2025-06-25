@@ -7,11 +7,9 @@ class TelaUsuarios(ctk.CTkFrame):
         super().__init__(master)
         self.usuario_logado = usuario_logado # Essencial para a verificação de autoexclusão
 
-        # --- Configuração do Grid Layout ---
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # --- Frame dos Botões de Ação (Coluna 0) ---
         action_frame = ctk.CTkFrame(self, width=150)
         action_frame.grid(row=0, column=0, padx=(10, 5), pady=10, sticky="nsew")
         action_frame.grid_rowconfigure(3, weight=1)
@@ -20,7 +18,6 @@ class TelaUsuarios(ctk.CTkFrame):
         ctk.CTkButton(action_frame, text="Cadastrar Usuário", command=self.cadastrar_usuario).grid(row=1, column=0, padx=10, pady=7, sticky="ew")
         ctk.CTkButton(action_frame, text="Excluir Usuário", command=self.excluir_usuario, fg_color="#D32F2F", hover_color="#B71C1C").grid(row=2, column=0, padx=10, pady=7, sticky="ew")
 
-        # --- Frame da Lista de Usuários (Coluna 1) ---
         list_frame = ctk.CTkFrame(self)
         list_frame.grid(row=0, column=1, padx=(5, 10), pady=10, sticky="nsew")
         
@@ -31,7 +28,6 @@ class TelaUsuarios(ctk.CTkFrame):
         self.atualizar_lista()
 
     def atualizar_lista(self):
-        """Busca os dados do backend e atualiza a caixa de texto."""
         self.textbox.configure(state="normal")
         self.textbox.delete("1.0", "end")
         lista_str = usuarios.get_users_as_string()
@@ -39,7 +35,6 @@ class TelaUsuarios(ctk.CTkFrame):
         self.textbox.configure(state="disabled")
 
     def cadastrar_usuario(self):
-        """Abre diálogos para cadastrar um novo usuário."""
         nome = simpledialog.askstring("Cadastro", "Nome Completo:", parent=self)
         if not nome or not nome.strip(): return
         
@@ -54,7 +49,6 @@ class TelaUsuarios(ctk.CTkFrame):
             messagebox.showerror("Erro de Validação", "Cargo inválido. Use 'admin' ou 'vendedor'.", parent=self)
             return
 
-        # Chama a função do backend
         novo_usuario = usuarios.register_user(nome.strip(), username.strip(), password, role.strip().lower())
         
         if novo_usuario:
@@ -64,13 +58,11 @@ class TelaUsuarios(ctk.CTkFrame):
             messagebox.showerror("Erro", f"O nome de usuário '{username}' já existe.", parent=self)
 
     def excluir_usuario(self):
-        """Pede um ID e confirma a exclusão de um usuário."""
         try:
             id_user_str = simpledialog.askstring("Excluir", "Digite o ID do usuário a excluir:", parent=self)
             if not id_user_str: return
             id_user = int(id_user_str)
 
-            # Verificação de autoexclusão
             if id_user == self.usuario_logado['id']:
                 messagebox.showwarning("Ação Ilegal", "Você não pode excluir a sua própria conta.", parent=self)
                 return

@@ -8,15 +8,12 @@ class TelaVenda(ctk.CTkFrame):
         self.usuario_logado = usuario_logado
         self.carrinho = []
 
-        # --- Layout Principal ---
         self.grid_columnconfigure(0, weight=2)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # --- Coluna da Esquerda (Produtos) ---
         produtos_frame = ctk.CTkFrame(self)
         produtos_frame.grid(row=0, column=0, sticky="nsew", padx=(10, 5), pady=10)
-        # --- AJUSTE 1: Configurando as colunas INTERNAS deste frame ---
         produtos_frame.grid_columnconfigure((0, 1), weight=1)
         produtos_frame.grid_rowconfigure(1, weight=1)
         
@@ -31,10 +28,8 @@ class TelaVenda(ctk.CTkFrame):
         self.qtd_entry = ctk.CTkEntry(produtos_frame, placeholder_text="Quantidade")
         self.qtd_entry.grid(row=2, column=1, padx=(2,5), pady=10, sticky="ew")
 
-        # --- AJUSTE 2: Garantindo que o botão também se expanda ---
         ctk.CTkButton(produtos_frame, text="Adicionar ao Carrinho", command=self.adicionar_ao_carrinho).grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-        # --- Coluna da Direita (Carrinho) ---
         carrinho_frame = ctk.CTkFrame(self)
         carrinho_frame.grid(row=0, column=1, sticky="nsew", padx=(5, 10), pady=10)
         carrinho_frame.grid_rowconfigure(1, weight=1)
@@ -51,7 +46,6 @@ class TelaVenda(ctk.CTkFrame):
 
         ctk.CTkButton(carrinho_frame, text="Finalizar Venda", command=self.finalizar_venda, fg_color="green", hover_color="darkgreen").grid(row=3, column=0, padx=5, pady=10, sticky="ew")
 
-        # Carrega os dados iniciais
         self.atualizar_lista_produtos()
         self.atualizar_display_carrinho()
 

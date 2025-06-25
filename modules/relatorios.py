@@ -2,7 +2,6 @@ from datetime import datetime
 from modules import transacoes, usuarios
 
 def get_daily_sales_report_string():
-    """Gera e retorna um relatório de vendas do dia como uma string formatada."""
     lista_de_transacoes = transacoes.load_transactions()
     data_hoje = datetime.now().date()
     
@@ -15,7 +14,6 @@ def get_daily_sales_report_string():
     total_vendido_dia = sum(venda.get('valor_total', 0) for venda in vendas_de_hoje)
     total_lucro_dia = sum(venda.get('lucro_total', 0) for venda in vendas_de_hoje)
 
-    # Construindo a string do relatório
     relatorio_str = "--- Relatório de Vendas do Dia ---\n"
     relatorio_str += "-" * 70 + "\n"
 

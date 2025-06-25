@@ -4,7 +4,6 @@ from datetime import datetime
 
 arquivo_usuarios = os.path.join('data', 'usuarios.json')
 
-# --- Funções de Load/Save (sem alteração) ---
 def load_user():
     if not os.path.exists(arquivo_usuarios): return []
     try:
@@ -18,7 +17,6 @@ def save_user(lista_usuarios):
     with open(arquivo_usuarios, 'w', encoding='utf-8') as f:
         json.dump(lista_usuarios, f, indent=2, ensure_ascii=False)
 
-# --- Funções de Lógica "Headless" ---
 def validate_user(username, password):
     for usuario in load_user():
         if usuario['username'] == username and usuario['password'] == password:
@@ -52,23 +50,19 @@ def delete_user_by_id(id_to_delete):
     usuarios = load_user()
     usuarios_restantes = [user for user in usuarios if user['id'] != id_to_delete]
     if len(usuarios) == len(usuarios_restantes):
-        return False # Nenhum usuário foi deletado
+        return False 
     save_user(usuarios_restantes)
     return True
 
-# --- Função Especial para Setup Inicial ---
 def setup_initial_admin():
-    """Usa console APENAS para criar o primeiro admin."""
     print("\n--- Cadastro do Administrador Inicial ---")
     nome_completo = input("Digite o nome completo do admin: ")
     username = input("Digite um nome de usuário (login) para o admin: ")
     password = input("Digite uma senha para o admin: ")
     register_user(nome_completo, username, password, role='admin')
     
-# Adicione esta função em modules/usuarios.py
 
 def get_users_as_string():
-    """Retorna a lista de usuários como uma única string formatada para a GUI."""
     usuarios = load_user()
     if not usuarios:
         return "Nenhum usuário cadastrado."

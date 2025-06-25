@@ -6,11 +6,9 @@ class TelaProdutos(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
 
-        # --- Configuração do Grid Layout ---
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # --- Frame dos Botões de Ação (Coluna 0) ---
         action_frame = ctk.CTkFrame(self, width=150)
         action_frame.grid(row=0, column=0, padx=(10, 5), pady=10, sticky="nsew")
         action_frame.grid_rowconfigure(5, weight=1) # Espaço flexível
@@ -21,7 +19,6 @@ class TelaProdutos(ctk.CTkFrame):
         ctk.CTkButton(action_frame, text="Excluir", command=self.excluir_produto, fg_color="#D32F2F", hover_color="#B71C1C").grid(row=3, column=0, padx=10, pady=7, sticky="ew")
         ctk.CTkButton(action_frame, text="Repor Estoque", command=self.repor_estoque).grid(row=4, column=0, padx=10, pady=7, sticky="ew")
 
-        # --- Frame da Lista de Produtos (Coluna 1) ---
         list_frame = ctk.CTkFrame(self)
         list_frame.grid(row=0, column=1, padx=(5, 10), pady=10, sticky="nsew")
         
@@ -32,7 +29,6 @@ class TelaProdutos(ctk.CTkFrame):
         self.atualizar_lista()
 
     def atualizar_lista(self):
-        """Busca os dados do backend e atualiza a caixa de texto."""
         self.textbox.configure(state="normal")
         self.textbox.delete("1.0", "end")
         lista_str = produtos.get_products_as_string() #
@@ -40,7 +36,6 @@ class TelaProdutos(ctk.CTkFrame):
         self.textbox.configure(state="disabled")
 
     def cadastrar_produto(self):
-        """Abre janelas de diálogo para cadastrar um novo produto."""
         try:
             nome = simpledialog.askstring("Cadastro", "Nome do produto:", parent=self)
             if not nome: return
@@ -53,21 +48,16 @@ class TelaProdutos(ctk.CTkFrame):
                 messagebox.showerror("Erro de Validação", "Valores numéricos não podem ser negativos.", parent=self)
                 return
 
-            # <<< ALTERAÇÃO AQUI >>>
-            # Agora, a interface verifica o retorno da função de registro.
-            # Se retornar False, significa que a validação de preço falhou no backend.
             if produtos.register_product(nome, preco_custo, preco_venda, estoque): #
                 messagebox.showinfo("Sucesso", "Produto cadastrado com sucesso!", parent=self)
                 self.atualizar_lista()
             else:
-                # Mensagem de erro específica para a validação de preços.
                 messagebox.showerror("Erro de Lógica", "Não foi possível cadastrar. O preço de venda deve ser maior que o preço de custo.", parent=self)
 
         except (ValueError, TypeError):
             messagebox.showerror("Erro de Validação", "Por favor, insira valores numéricos válidos para preços e estoque.", parent=self)
 
     def editar_produto(self):
-        """Abre janelas de diálogo para editar um produto existente."""
         try:
             id_prod_str = simpledialog.askstring("Editar", "Digite o ID do produto a editar:", parent=self)
             if not id_prod_str: return
@@ -83,21 +73,16 @@ class TelaProdutos(ctk.CTkFrame):
             
             novo_preco = float(novo_preco_str) if novo_preco_str else None
 
-            # <<< ALTERAÇÃO AQUI >>>
-            # A interface agora verifica o retorno da função de edição.
-            # Se retornar False, a validação de preço falhou no backend.
             if produtos.edit_product(id_prod, novo_nome, novo_preco, None): #
                 messagebox.showinfo("Sucesso", "Produto editado com sucesso!", parent=self)
                 self.atualizar_lista()
             else:
-                # Mensagem de erro específica para a falha na edição.
                 messagebox.showerror("Erro de Lógica", "Não foi possível editar. Verifique se o novo preço de venda é maior que o preço de custo.", parent=self)
 
         except (ValueError, TypeError):
             messagebox.showerror("Erro de Validação", "Valores inválidos.", parent=self)
 
     def excluir_produto(self):
-        """Pede um ID e confirma a exclusão de um produto."""
         try:
             id_prod_str = simpledialog.askstring("Excluir", "Digite o ID do produto a excluir:", parent=self)
             if not id_prod_str: return
@@ -118,7 +103,6 @@ class TelaProdutos(ctk.CTkFrame):
             messagebox.showerror("Erro", "ID inválido.", parent=self)
 
     def repor_estoque(self):
-        """Pede ID e quantidade para repor o estoque de um produto."""
         try:
             id_prod_str = simpledialog.askstring("Repor Estoque", "Digite o ID do produto:", parent=self)
             if not id_prod_str: return
