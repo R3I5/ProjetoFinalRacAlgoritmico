@@ -7,10 +7,10 @@ if __name__ == "__main__":
     if not lista_de_usuarios:
         print("--- Configuração Inicial do Sistema (via console) ---")
         print("Nenhum usuário encontrado. Vamos criar a conta do administrador.")
-        usuarios.setup_initial_admin() # Função especial que ainda usa console
+        usuarios.setup_initial_admin() 
         print("\n✅ Administrador configurado! Execute o programa novamente para usar a interface.")
     else:
-        ctk.set_appearance_mode("dark")  # Opções: "dark", "light", "system"
-        ctk.set_default_color_theme("green") # Opções: "blue", "green", "dark-blue"
+        ctk.set_appearance_mode("dark")  
+        ctk.set_default_color_theme("green") 
         app = App()
         app.mainloop()
