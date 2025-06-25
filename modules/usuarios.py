@@ -35,7 +35,7 @@ def find_user_by_id(user_id):
 def register_user(nome_completo, username, password, role):
     usuarios = load_user()
     if any(u['username'] == username for u in usuarios):
-        return None # Usuário já existe
+        return None 
     
     novo_id = max([u.get('id', 0) for u in usuarios] + [0]) + 1
     novo_usuario = {

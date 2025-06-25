@@ -5,7 +5,7 @@ from modules import usuarios
 class TelaUsuarios(ctk.CTkFrame):
     def __init__(self, master, usuario_logado):
         super().__init__(master)
-        self.usuario_logado = usuario_logado # Essencial para a verificação de autoexclusão
+        self.usuario_logado = usuario_logado 
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
