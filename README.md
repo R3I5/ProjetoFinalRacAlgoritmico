@@ -1,57 +1,111 @@
-# Sistema de Gestão de Vendas e Estoque (PDV em Console)
+# Sistema de Gestão de Vendas e Estoque
 
-![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
-![Status](https://img.shields.io/badge/status-em_desenvolvimento-yellow.svg)
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Status](https://img.shields.io/badge/status-concluído-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-> 🚧 **Projeto em Desenvolvimento** 🚧
+> 🏆 **Projeto Concluído** 🏆
 
 ## 📝 Descrição
 
-Este projeto é um sistema de Ponto de Venda (PDV) e gestão de estoque desenvolvido em Python, executado inteiramente no console (terminal). O objetivo é simular as operações de uma loja, aplicando conceitos fundamentais de lógica de programação, estrutura de dados e manipulação de arquivos.
+Este projeto é um sistema de Ponto de Venda (PDV) e gestão de estoque desenvolvido em Python, com uma interface gráfica moderna construída com a biblioteca **CustomTkinter**. O objetivo inicial era simular as operações de uma loja via console, aplicando conceitos de raciocínio algorítmico, mas o projeto evoluiu para uma aplicação de desktop completa e funcional.
 
-Este trabalho está sendo desenvolvido para a disciplina de Raciocínio Algorítmico.
+A arquitetura do sistema foi projetada para uma clara **separação de camadas**:
+* **Backend (`modules/`):** Uma lógica de negócio "headless" (sem interface) que gerencia usuários, produtos, vendas e relatórios.
+* **Frontend (`interface/`):** Uma interface gráfica orientada a objetos que consome os serviços do backend para proporcionar uma experiência de usuário intuitiva.
+* **Dados (`data/`):** Persistência de dados através de arquivos CSV e JSON.
 
-## ✨ Funcionalidades
+Este trabalho foi desenvolvido para a disciplina de Raciocínio Algorítmico.
 
-O sistema foi projetado com os seguintes módulos e funcionalidades:
+## ✨ Funcionalidades Implementadas
 
-#### 🧑‍💼 **Módulo 1: Gestão de Usuários e Acesso**
+#### 🧑‍💼 Módulo 1: Gestão de Usuários e Acesso
 - [x] Cadastro e Login de usuários.
-- [ ] Diferenciação de níveis de acesso (Admin vs. Vendedor).
+- [x] Diferenciação de níveis de acesso (Admin vs. Vendedor).
+- [x] CRUD completo de usuários (Cadastrar, Listar, Excluir) via interface de admin.
+- [x] Setup gráfico para criação do primeiro usuário administrador.
 
-#### 📦 **Módulo 2: Gestão de Produtos (CRUD)**
-- [x] Cadastro de novos produtos (Nome, Categoria, Preço, Estoque).
-- [x] Consulta de produtos.
-- [ ] Edição de informações de produtos existentes.
-- [ ] Exclusão de produtos.
+#### 📦 Módulo 2: Gestão de Produtos
+- [x] CRUD completo de produtos (Cadastrar, Listar, Editar, Excluir).
+- [x] Gerenciamento de informações como preço de custo, preço de venda e quantidade.
+- [x] Função de reposição de estoque para o administrador.
 
-#### 🛒 **Módulo 3: Operações de Venda e Estoque**
-- [x] Registro de vendas com atualização automática de estoque.
-- [x] Verificação de disponibilidade de estoque antes da venda.
-- [ ] Reposição de estoque (entrada de mercadorias).
+#### 🛒 Módulo 3: Operações de Venda
+- [x] Interface de venda com carrinho de compras interativo (adicionar/remover itens).
+- [x] Atualização automática de estoque após cada venda.
+- [x] Validação de estoque em tempo real para prevenir vendas indevidas.
 
-#### 📈 **Módulo 4: Financeiro e Relatórios**
-- [ ] Consulta de Caixa (saldo total das vendas).
-- [ ] Cálculo de lucro por venda.
-- [ ] Geração de relatório de produtos com estoque baixo.
-- [ ] Geração de extratos de transações com filtros (diário, mensal, etc.).
-
+#### 📈 Módulo 4: Financeiro e Relatórios
+- [x] Cálculo e registro de lucro em cada venda.
+- [x] Registro de todas as transações (vendas e compras/reposição).
+- [x] Geração de relatório de vendas diárias com faturamento e lucro.
 
 ## 🛠️ Tecnologias Utilizadas
 
 * **Linguagem:** Python 3.10+
-* **Persistência de Dados:** Arquivos de texto em formato CSV ou JSON (a ser definido).
+* **Interface Gráfica:** CustomTkinter, Tkinter (`messagebox`, `simpledialog`)
+* **Persistência de Dados:** Módulos `json` e `csv` da biblioteca padrão.
 
 ## 🚀 Como Executar o Projeto
 
-Para executar este projeto localmente, siga os passos abaixo:
+Para executar este projeto localmente, siga os passos abaixo.
 
 **1. Pré-requisitos:**
-* Certifique-se de ter o [Python 3](https://www.python.org/downloads/) instalado.
-* É recomendado o uso de um ambiente virtual (`venv`).
+* Ter o [Python 3](https://www.python.org/downloads/) e o `pip` instalados.
+* Ter o `git` instalado para clonar o repositório.
 
-**2. Clone o repositório:**
+**2. Instalação:**
+
 ```bash
-git clone https://github.com/R3I5/ProjetoFinalRacAlgoritmico.git
+# Clone o repositório para sua máquina local
+git clone [https://github.com/R3I5/ProjetoFinalRacAlgoritmico.git](https://github.com/R3I5/ProjetoFinalRacAlgoritmico.git)
+
+# Navegue até a pasta do projeto
 cd ProjetoFinalRacAlgoritmico
+
+# Crie um ambiente virtual (altamente recomendado)
+python3 -m venv venv
+
+# Ative o ambiente virtual
+# No Windows: venv\Scripts\activate
+# No macOS/Linux:
+source venv/bin/activate
+
+# Instale todas as dependências necessárias
+pip install -r requirements.txt
+```
+
+**3. Execução:**
+
+Com o ambiente virtual ativado, execute o seguinte comando para iniciar a aplicação gráfica:
+```bash
+python run_gui.py
+```
+*Se for a primeira execução, uma série de diálogos aparecerá para configurar a conta do administrador.*
+
+## 📂 Estrutura do Projeto
+
+```
+/ProjetoFinalRacAlgoritmico
+├── data/
+│   ├── produtos.csv
+│   ├── transacoes.json
+│   └── usuarios.json
+├── interface/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── tela_login.py
+│   ├── tela_principal.py
+│   └── ... (outras telas .py)
+├── modules/
+│   ├── usuarios.py
+│   ├── produtos.py
+│   └── ... (outros módulos .py)
+├── run_gui.py            # <-- Ponto de entrada da aplicação
+├── README.md
+└── requirements.txt
+```
+
+## 👨‍💻 Autor
+
+Feito por **João Victor dos Reis**.
